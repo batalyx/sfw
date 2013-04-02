@@ -58,8 +58,18 @@
   (with-html-output (*standard-output* nil :prologue t :indent t)
     (:html (:body "json!"))))
 
+(defun foo ()
+  (:documentation "Simple function to learn, how to get utf-8 characters out of cl-who.")
+  "Pöö!")
 
 (defun sf ())
+
+(defun root-alt ()
+  (with-html-output-to-string
+   (*standard-output* nil :prologue nil)
+   (str (drakma:http-request "http://slashdot.org/"
+			     :external-format-in :utf-8))))
+
 (defun root ()
-  (with-html-output (*standard-output* nil :prologue t :indent t)
-    (:html (:body (:h1 "Pöö!")))))
+  (with-html-output-to-string (*standard-output* nil :prologue t :indent t)
+    (:html (:meta :charset "utf-8") (:body (:h1 (str (foo)))))))
